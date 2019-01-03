@@ -61,6 +61,7 @@
 #else
 #define _ZONE ZONE_NORMAL
 #endif
+#include <linux/cpu_input_boost.h>
 
 #define CREATE_TRACE_POINTS
 #include "trace/lowmemorykiller.h"
@@ -611,6 +612,11 @@ static unsigned long lowmem_scan(struct shrinker *s, struct shrink_control *sc)
 		mutex_unlock(&scan_mutex);
 		return 0;
 	}
+
+	cpu_input_boost_kick_max(100);
+#ifdef CONFIG_CPU_INPUT_BOOST_DEBUG
+	pr_info("kicked general cpu boost for 100 ms\n");
+#endif
 
 	selected_oom_score_adj = min_score_adj;
 
