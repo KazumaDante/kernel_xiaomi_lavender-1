@@ -1220,11 +1220,6 @@ static const struct cpumask *adjust_cpumask(struct task_struct *p,
 	if (p->flags & PF_PERF_CRITICAL)
 		return cpu_perf_mask;
 
-	/* Force all trivial, unbound kthreads onto the little cluster */
-	if (p->flags & PF_KTHREAD && p->pid != 1 &&
-		cpumask_equal(req_mask, cpu_all_mask))
-		return cpu_lp_mask;
-
 	return req_mask;
 }
 
@@ -1232,6 +1227,8 @@ void do_set_cpus_allowed(struct task_struct *p, const struct cpumask *new_mask)
 {
 	struct rq *rq = task_rq(p);
 	bool queued, running;
+
+	new_mask = adjust_cpumask(p, new_mask);
 
 	lockdep_assert_held(&p->pi_lock);
 
