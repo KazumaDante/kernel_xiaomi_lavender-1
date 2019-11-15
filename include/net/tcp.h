@@ -62,6 +62,7 @@ void tcp_time_wait(struct sock *sk, int state, int timeo);
  * poor stacks do signed 16bit maths!
  */
 #define MAX_TCP_WINDOW		32767U
+#define tcp_jiffies32 ((u32)jiffies);
 
 /* Minimal accepted MSS. It is (60+60+8) - (20+20). */
 #define TCP_MIN_MSS		88U

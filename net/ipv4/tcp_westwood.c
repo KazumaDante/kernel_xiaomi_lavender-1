@@ -135,7 +135,7 @@ static void westwood_update_window(struct sock *sk)
 	 * Obviously on a LAN we reasonably will always have
 	 * right_bound = left_bound + WESTWOOD_RTT_MIN
 	 */
-	if (w->rtt && delta > max_t(u32, w->rtt, TCP_WESTWOOD_RTT_MIN)) {
+	if (w->rtt && delta > max_t(u32, w->rtt, tcp_westwood_rtt_min)) {
 		westwood_filter(w, delta);
 
 		w->bk = 0;
